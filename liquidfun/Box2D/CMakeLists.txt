@@ -37,10 +37,12 @@ if(CMAKE_CXX_COMPILER MATCHES ".*clang")
   # set_target_properties Can not find target to add properties to: Threads::Threads
   find_package(Threads)
 endif()
-if (WIN32)
+if (WIN32 OR UNIX)
   find_package(Threads)
 endif()
-
+if (UNIX)
+  find_package(X11 REQUIRED)
+endif()
 
 add_definitions( -DLIQUIDFUN_EXTERNAL_LANGUAGE_API=1 )
 
@@ -75,7 +77,7 @@ if(MSVC)
 elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX OR
        CMAKE_COMPILER_IS_CLANGXX)
   # Set the maximum warning level for gcc.
-  set(C_FLAGS_WARNINGS "-Wall -Werror -Wno-long-long -Wno-variadic-macros")
+  set(C_FLAGS_WARNINGS "-Wall -Wno-long-long -Wno-variadic-macros")
 endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${C_FLAGS_WARNINGS}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${C_FLAGS_WARNINGS}")
